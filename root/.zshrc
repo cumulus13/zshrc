@@ -1,4 +1,12 @@
 source ~/.fonts/*.sh
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+if command -v pyenv 1>/dev/null 2>&1; then
+    eval "$(pyenv init -)"
+fi
+
+eval "$(pyenv virtualenv-init -)"
+
 # References
 # OhMyZsh: https://github.com/robbyrussell/oh-my-zsh
 # Powerlevel9k: https://github.com/bhilburn/powerlevel9k
@@ -22,6 +30,8 @@ alias lsd='ls -p | grep -i /'
 alias lt='ls -larth'
 alias move='mv -v -i'
 alias copy='cp -v -i'
+
+LS_COLORS='rs=0:di=0;96:ln=03;101;4:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=30;102:st=37;44:ex=01;32:*.run=0;100:*.json=01;37:*.tar=01;93:*.tgz=0;93:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=1;31;47:*.z=01;31:*.dz=01;31:*.gz=01;93:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;93:*.zst=01;31:*.tzst=01;31:*.bz2=01;93:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;101:*.rpm=01;31:*.jar=0;30;42:*.war=0;30;42:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=0;30;42:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;34:*.jpeg=01;34:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;34:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;34:*.tiff=01;34:*.png=01;34:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*.h=01;35';
 
 export OPENSSL_CONF=/etc/ssl/
 
@@ -57,23 +67,25 @@ width=$(tput cols)
 max=115
 maxdiv=77
 maxdivxterm=81
-if (( $(bc <<<"$width > $max") )); then 
+if (( $(bc <<<"$width > $max") )); then
   POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats nvm node_version rvm dir_writable date time load custom_containt_files)
   ########
   # MOTD #
   ########
-  fortune | cowsay -f dragon-and-cow
-elif (( $(bc <<<"$width < $maxdivxterm") )); then 
+  if [[ ! $(whoami) == 'root' ]]; then
+    fortune | cowsay -f dragon-and-cow
+  fi
+elif (( $(bc <<<"$width < $maxdivxterm") )); then
   POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats dir_writable time)
-elif (( $(bc <<<"$width < $max") )); then 
+elif (( $(bc <<<"$width < $max") )); then
   POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats dir_writable time custom_containt_files)
 else
   POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats nvm dir_writable date time load custom_containt_files)
 fi
 
-POWERLEVEL9K_USER_ICON="\uF306" # 
+POWERLEVEL9K_USER_ICON="\uF306" # ï
 POWERLEVEL9K_ROOT_ICON="\uE614"
-POWERLEVEL9K_SUDO_ICON=$'\uF09C' # 
+POWERLEVEL9K_SUDO_ICON=$'\uF09C' # ï
 
 POWERLEVEL9K_NODE_VERSION_FOREGROUND=7
 POWERLEVEL9K_NODE_VERSION_BACKGROUND=53
@@ -85,22 +97,22 @@ POWERLEVEL9K_USER_ROOT_BACKGROUND=1
 POWERLEVEL9K_CUSTOM_RUBY="echo '\Ue639 '"
 POWERLEVEL9K_CUSTOM_RUBY_FOREGROUND="red"
 
-#POWERLEVEL9K_USER_ICON="\uF306" # 
+#POWERLEVEL9K_USER_ICON="\uF306" # ï
 #POWERLEVEL9K_ROOT_ICON="\uE614"
-#POWERLEVEL9K_SUDO_ICON=$'\uF09C' # 
+#POWERLEVEL9K_SUDO_ICON=$'\uF09C' # ï
 
 custom_user_icon() {
-  if (( $(bc <<<"$width > $maxdivxterm") )); then 
+  if (( $(bc <<<"$width > $maxdivxterm") )); then
     if [[ $(whoami) == 'root' ]]; then
-      echo "\uE614 $USER"  
+      echo "\uE614 $USER"
     else
-      echo "\uF306 $USER"  
+      echo "\uF306 $USER"
     fi
   else
     if [[ $(whoami) == 'root' ]]; then
-      echo "\uE614"  
+      echo "\uE614"
     else
-      echo "\uF306"  
+      echo "\uF306"
     fi
   fi
 }
@@ -120,14 +132,14 @@ custom_pyenv_icon() {
     if [[ "$check_py" == *"Anaconda"* ]]; then
       POWERLEVEL9K_CUSTOM_PYENV_ICON_FOREGROUND=196
       POWERLEVEL9K_CUSTOM_PYENV_ICON_BACKGROUND=0
-      if (( $(bc <<<"$width > $maxdivxterm") )); then 
+      if (( $(bc <<<"$width > $maxdivxterm") )); then
         echo "$pyv \U1F40D"
       else
         echo "\U1F40D"
       fi
 
     else
-      if (( $(bc <<<"$width > $maxdivxterm") )); then 
+      if (( $(bc <<<"$width > $maxdivxterm") )); then
         echo "$pyv \uE63C"
       else
         echo "\uE63C"
@@ -150,17 +162,17 @@ custom_containt_files() {
   local css=$(echo $dirdetect | awk '{ print $7; }')
   local md=$(echo $dirdetect | awk '{ print $8; }')
   local rst=$(echo $dirdetect | awk '{ print $9; }')
-  
+
   local files
 
   if [[ $py != "0.00" ]]; then
     files="$py%%\U1F40D"
   fi
-  
+
   if [[ $rb != "0.00" ]]; then
     files="$files $rb%%\uF219"
   fi
-  
+
   if [[ $pl != "0.00" ]]; then
     files="$files $pl%%perl"
   fi
@@ -168,27 +180,27 @@ custom_containt_files() {
   if [[ $js != "0.00" ]]; then
     files="$files $js%%\u2B22"
   fi
-  
+
   if [[ $java != "0.00" ]]; then
     files="$files $java%%\U2615"
   fi
-  
+
   if [[ $html != "0.00" ]]; then
     files="$files $html%%html"
   fi
-  
+
   if [[ $css != "0.00" ]]; then
     files="$files $css%%css"
   fi
-  
+
   if [[ $md != "0.00" ]]; then
     files="$files $md%%md"
   fi
-  
+
   if [[ $rst != "0.00" ]]; then
     files="$files $rst%%rst"
   fi
-  
+
   echo $files
 }
 
@@ -497,13 +509,6 @@ function setcartoview() {
 	export DEFAULT_BACKEND_UPLOADER=geonode.importer
 }
 
-export PYENV_ROOT="/projects/pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-if command -v pyenv 1>/dev/null 2>&1; then
-    eval "$(pyenv init -)"
-fi
-
-eval "$(pyenv virtualenv-init -)"
 #synclient tapbutton1=1
 #. "$HOME/.cargo/env"
 
