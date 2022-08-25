@@ -1,4 +1,5 @@
 source ~/.fonts/*.sh
+precmd () {print -Pn "\e]0;\a"}
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 if command -v pyenv 1>/dev/null 2>&1; then
@@ -39,7 +40,7 @@ export OPENSSL_CONF=/etc/ssl/
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-  export ZSH=~/.oh-my-zsh/custom/plugins/oh-my-zsh
+export ZSH=~/.oh-my-zsh/custom/plugins/oh-my-zsh
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
@@ -67,8 +68,11 @@ width=$(tput cols)
 max=115
 maxdiv=77
 maxdivxterm=81
-if (( $(bc <<<"$width > $max") )); then
-  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats nvm node_version rvm dir_writable date time load custom_containt_files)
+maxqterm=128
+if [[ $width == $maxqterm ]]; then
+  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats nvm dir_writable date time load custom_containt_files)
+elif (( $(bc <<<"$width > $max") )); then
+  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats nvm node_version rvm dir_writable date time load custom_containt_files custom_state)
   ########
   # MOTD #
   ########
@@ -76,11 +80,13 @@ if (( $(bc <<<"$width > $max") )); then
     fortune | cowsay -f dragon-and-cow
   fi
 elif (( $(bc <<<"$width < $maxdivxterm") )); then
-  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats dir_writable time)
+  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats dir_writable time custom_state)
 elif (( $(bc <<<"$width < $max") )); then
-  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats dir_writable time custom_containt_files)
+  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats dir_writable time custom_containt_files custom_state)
+elif (( $(bc <<<"$width < $maxqterm") )); then
+  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats dir_writable time custom_containt_files custom_state)
 else
-  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats nvm dir_writable date time load custom_containt_files)
+  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats nvm dir_writable date time load custom_containt_files custom_state)
 fi
 
 POWERLEVEL9K_USER_ICON="\uF306" # 
@@ -132,17 +138,17 @@ custom_pyenv_icon() {
     if [[ "$check_py" == *"Anaconda"* ]]; then
       POWERLEVEL9K_CUSTOM_PYENV_ICON_FOREGROUND=196
       POWERLEVEL9K_CUSTOM_PYENV_ICON_BACKGROUND=0
-      if (( $(bc <<<"$width > $maxdivxterm") )); then
-        echo "$pyv \U1F40D"
-      else
+      if (( $(bc <<<"$width < $maxdivxterm") )); then
         echo "\U1F40D"
+      else
+        echo "$pyv \U1F40D"
       fi
 
     else
-      if (( $(bc <<<"$width > $maxdivxterm") )); then
-        echo "$pyv \uE63C"
-      else
+      if (( $(bc <<<"$width < $maxdivxterm") )); then
         echo "\uE63C"
+      else
+        echo "$pyv \uE63C"
       fi
     fi
   fi
@@ -248,7 +254,7 @@ POWERLEVEL9K_OS_ICON_FOREGROUND="blue"
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
 POWERLEVEL9K_DIR_HOME_FOREGROUND=0
 POWERLEVEL9K_DIR_HOME_BACKGROUND=108
-POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND="white"
+POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND=0
 POWERLEVEL9K_DIR_HOME_SUBFOLDER_BACKGROUND=115
 POWERLEVEL9K_DIR_DEFAULT_FOREGROUND=0
 POWERLEVEL9K_DIR_DEFAULT_BACKGROUND=130
@@ -261,29 +267,34 @@ POWERLEVEL9K_COMMAND_EXECUTION_TIME_BACKGROUND="blue"
 # POWERLEVEL9K_DIR_BACKGROUND=130
 # POWERLEVEL9K_DIR_FOREGROUND=254
 # POWERLEVEL9K_DIR_FOREGROUND=0
-if [[ $(whoami) == 'root' ]]; then
-  POWERLEVEL9K_DIR_FOREGROUND=7
-  POWERLEVEL9K_DIR_BACKGROUND=1
-  POWERLEVEL9K_CUSTOM_USER_ICON_FOREGROUND=7
-  POWERLEVEL9K_CUSTOM_USER_ICON_BACKGROUND=1
-  POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND=0
-else
-  if [[ -n $(echo $XTERM_VERSION) ]]; then
-    POWERLEVEL9K_DIR_FOREGROUND=0
-    POWERLEVEL9K_DIR_HOME_FOREGROUND=0
-    POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND=0
-    POWERLEVEL9K_DIR_DEFAULT_FOREGROUND=0
-    POWERLEVEL9K_TIME_DEFAULT_FOREGROUND=0
-    POWERLEVEL9K_TIME_ICON_DEFAULT_FOREGROUND=0
-    POWERLEVEL9K_TIME_FOREGROUND=0
-    POWERLEVEL9K_TIME_ICON_FOREGROUND=0
-  else
+
+custom_state() {
+  if [[ $(whoami) == 'root' ]]; then
     POWERLEVEL9K_DIR_FOREGROUND=7
-    POWERLEVEL9K_DIR_BACKGROUND=128
-    POWERLEVEL9K_CUSTOM_USER_ICON_FOREGROUND=0
-    POWERLEVEL9K_CUSTOM_USER_ICON_BACKGROUND=7
+    POWERLEVEL9K_DIR_BACKGROUND=1
+    POWERLEVEL9K_CUSTOM_USER_ICON_FOREGROUND=7
+    POWERLEVEL9K_CUSTOM_USER_ICON_BACKGROUND=1
+    POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND=0
+  else
+    if [[ -n $(echo $XTERM_VERSION) ]]; then
+      POWERLEVEL9K_DIR_FOREGROUND=0
+      POWERLEVEL9K_DIR_HOME_FOREGROUND=0
+      POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND=0
+      POWERLEVEL9K_DIR_DEFAULT_FOREGROUND=0
+      POWERLEVEL9K_TIME_DEFAULT_FOREGROUND=0
+      POWERLEVEL9K_TIME_ICON_DEFAULT_FOREGROUND=0
+      POWERLEVEL9K_TIME_FOREGROUND=0
+      POWERLEVEL9K_TIME_ICON_FOREGROUND=0
+    else
+      POWERLEVEL9K_DIR_FOREGROUND=7
+      POWERLEVEL9K_DIR_BACKGROUND=128
+      POWERLEVEL9K_CUSTOM_USER_ICON_FOREGROUND=0
+      POWERLEVEL9K_CUSTOM_USER_ICON_BACKGROUND=7
+    fi
   fi
-fi
+}
+
+POWERLEVEL9K_CUSTOM_STATE="custom_state"
 
 # Prompt Line
 POWERLEVEL9K_PROMPT_ON_NEWLINE=true
@@ -334,7 +345,7 @@ COMPLETION_WAITING_DOTS="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 #plugins=(git rails ruby rvm sublime command-not-found jsontools npm nyan web-search bundler auto-fortune-cowsay zsh-syntax-highlighting pyenv zsh-pyenv)
-plugins=(git rails ruby rvm sublime command-not-found jsontools npm nyan web-search bundler zsh-syntax-highlighting pyenv zsh-pyenv virtualenv aterminal zpy autopep8 themes nvm python ruby)
+plugins=(git rails ruby rvm sublime command-not-found jsontools npm nyan web-search bundler zsh-syntax-highlighting pyenv zsh-pyenv virtualenv aterminal zpy autopep8 themes nvm python ruby title)
 
 source $ZSH/oh-my-zsh.sh
 EDITOR='nano'
@@ -413,7 +424,7 @@ alias elasticsearch-start="sudo service elasticsearch start"
 #
 # port - All processes with port will be killed
 # name - All processes given a name will be killed
-function kill-process-by()
+function zkill()
 {
   case $1 in
   port )
@@ -429,14 +440,16 @@ function set-title() {
   if [[ -z "$ORIG" ]]; then
     ORIG=$PS1
   fi
-  TITLE="\[\e]2;$*\a\]"
+  TITLE="$*\a\]"
   PS1=${ORIG}${TITLE}
+  PROMPT_TITLE=${TITLE}
 }
 
 set-title2(){
 	ORIG=$PS1
 	TITLE="\e]2;$@\a"
 	PS1=${ORIG}${TITLE}
+    PROMPT_TITLE=${ORIG}${TITLE}
 }
 
 function settitle()
@@ -451,6 +464,7 @@ function settitle()
      esac
      local prompt=$(echo "$PS1" | sed -e 's/\\\[\\033\]0;.*\\007\\\]//')
      PS1="${title}${prompt}"
+     PROMPT_TITLE="${title}${prompt}"
  }
 
 DEBUGGER_PORT=50001
@@ -513,7 +527,7 @@ function setcartoview() {
 #synclient tapbutton1=1
 #. "$HOME/.cargo/env"
 
-export PATH=$PATH:/root/.local/bin
+export PATH=$PATH:~/.local/bin
 export PATH="$PATH:/opt/mssql-tools/bin"
 
 function path_repl {
