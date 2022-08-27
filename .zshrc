@@ -1,12 +1,12 @@
 source ~/.fonts/*.sh
-precmd () {print -Pn "\e]0;\a"}
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-if command -v pyenv 1>/dev/null 2>&1; then
-    eval "$(pyenv init -)"
-fi
+#export PYENV_ROOT="$HOME/.pyenv"
+#export PATH="$PYENV_ROOT/bin:$PATH"
+#if command -v pyenv 1>/dev/null 2>&1; then
+#    eval "$(pyenv init -)"
+#fi
 
-eval "$(pyenv virtualenv-init -)"
+#eval "$(pyenv virtualenv-init -)"
+
 
 # References
 # OhMyZsh: https://github.com/robbyrussell/oh-my-zsh
@@ -64,14 +64,13 @@ POWERLEVEL9K_CUSTOM_PYENV="echo \$(python -c 'import sys; print(\" \".join(map(s
 POWERLEVEL9K_CUSTOM_PYENV_BACKGROUND=11
 #POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats nvm node_version rvm dir_writable date time load custom_containt_files)
 
-width=$(tput cols)
+# width=$(tput cols)
 max=115
 maxdiv=77
 maxdivxterm=81
 maxqterm=128
-if [[ $width == $maxqterm ]]; then
-  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats nvm dir_writable date time load custom_containt_files)
-elif (( $(bc <<<"$width > $max") )); then
+qmax=226
+if (( $(bc <<<"$(tput cols) > $qmax") )); then
   POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats nvm node_version rvm dir_writable date time load custom_containt_files custom_state)
   ########
   # MOTD #
@@ -79,11 +78,19 @@ elif (( $(bc <<<"$width > $max") )); then
   if [[ ! $(whoami) == 'root' ]]; then
     fortune | cowsay -f dragon-and-cow
   fi
-elif (( $(bc <<<"$width < $maxdivxterm") )); then
+elif (( $(bc <<<"$(tput cols) > $max") )); then
+  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats nvm node_version rvm dir_writable date time load custom_containt_files custom_state)
+  ########
+  # MOTD #
+  ########
+  if [[ ! $(whoami) == 'root' ]]; then
+    fortune | cowsay -f dragon-and-cow
+  fi
+elif (( $(bc <<<"$(tput cols) < $maxdivxterm") )); then
   POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats dir_writable time custom_state)
-elif (( $(bc <<<"$width < $max") )); then
+elif (( $(bc <<<"$(tput cols) < $max") )); then
   POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats dir_writable time custom_containt_files custom_state)
-elif (( $(bc <<<"$width < $maxqterm") )); then
+elif (( $(bc <<<"$(tput cols) < $maxqterm") )); then
   POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats dir_writable time custom_containt_files custom_state)
 else
   POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats nvm dir_writable date time load custom_containt_files custom_state)
@@ -97,6 +104,13 @@ POWERLEVEL9K_NODE_VERSION_FOREGROUND=7
 POWERLEVEL9K_NODE_VERSION_BACKGROUND=53
 POWERLEVEL9K_USER_ROOT_FOREGROUND=7
 POWERLEVEL9K_USER_ROOT_BACKGROUND=1
+if [[ $(whoami) == 'root' ]]; then
+	POWERLEVEL9K_CUSTOM_USER_ICON_FOREGROUND=7
+	POWERLEVEL9K_CUSTOM_USER_ICON_BACKGROUND=1
+else
+	POWERLEVEL9K_CUSTOM_USER_ICON_FOREGROUND=0
+	POWERLEVEL9K_CUSTOM_USER_ICON_BACKGROUND=7
+fi
 
 # Custom Ruby
 # Just shows a cute ruby icon (in red)
@@ -108,17 +122,33 @@ POWERLEVEL9K_CUSTOM_RUBY_FOREGROUND="red"
 #POWERLEVEL9K_SUDO_ICON=$'\uF09C' # 
 
 custom_user_icon() {
-  if (( $(bc <<<"$width > $maxdivxterm") )); then
+  if (( $(bc <<<"$(tput cols) > $maxdivxterm") )); then
     if [[ $(whoami) == 'root' ]]; then
-      echo "\uE614 $USER"
+      if [[ $($(ps -p $(ps -p $$ -o ppid=) o args=) --version) == *util-linux* ]]; then
+        echo "#"
+      else
+        echo "\uE614 $USER"
+      fi
     else
-      echo "\uF306 $USER"
+      if [[ $(ps -p $(ps -p $$ -o ppid=) o args=) == *xterm* ]]; then
+        echo "$"
+      else
+        echo "\uF306 $USER"
+      fi
     fi
   else
     if [[ $(whoami) == 'root' ]]; then
-      echo "\uE614"
+      if [[ $($(ps -p $(ps -p $$ -o ppid=) o args=) --version) == *util-linux* ]]; then
+        echo "#"
+      else
+        echo "\uE614"
+      fi
     else
-      echo "\uF306"
+      if [[ $(ps -p $(ps -p $$ -o ppid=) o args=) == *xterm* ]]; then
+        echo "$"
+      else
+        echo "\uF306"
+      fi
     fi
   fi
 }
@@ -135,20 +165,55 @@ custom_pyenv_icon() {
   if [[ -n $(echo $XTERM_VERSION) ]]; then
     echo "$pyv"
   else
-    if [[ "$check_py" == *"Anaconda"* ]]; then
-      POWERLEVEL9K_CUSTOM_PYENV_ICON_FOREGROUND=196
-      POWERLEVEL9K_CUSTOM_PYENV_ICON_BACKGROUND=0
-      if (( $(bc <<<"$width < $maxdivxterm") )); then
-        echo "\U1F40D"
+    if [[ $(whoami) == 'root' ]]; then
+      if [[ $($(ps -p $(ps -p $$ -o ppid=) o args=) --version) == *util-linux* ]]; then
+        echo "$pyv"
       else
-        echo "$pyv \U1F40D"
-      fi
+        if [[ "$check_py" == *"Anaconda"* ]]; then
+          POWERLEVEL9K_CUSTOM_PYENV_ICON_FOREGROUND=196
+          POWERLEVEL9K_CUSTOM_PYENV_ICON_BACKGROUND=0
+          if (( $(bc <<<"$(tput cols) > $qmax") )); then
+            echo "$pyv \U1F40D"
+          elif (( $(bc <<<"$(tput cols) < $maxdivxterm") )); then
+            echo "\U1F40D"
+          else
+            echo "$pyv \U1F40D"
+          fi
 
+        else
+          if (( $(bc <<<"$(tput cols) < $maxdivxterm") )); then
+            echo "\uE63C"
+          elif (( $(bc <<<"$(tput cols) < $maxdivxterm") )); then
+            echo "\uE63C"
+          else
+            echo "$pyv \uE63C"
+          fi
+        fi
+      fi
     else
-      if (( $(bc <<<"$width < $maxdivxterm") )); then
-        echo "\uE63C"
+      if [[ $(ps -p $(ps -p $$ -o ppid=) o args=) == *xterm* ]]; then
+        echo "$pyv"
       else
-        echo "$pyv \uE63C"
+        if [[ "$check_py" == *"Anaconda"* ]]; then
+          POWERLEVEL9K_CUSTOM_PYENV_ICON_FOREGROUND=196
+          POWERLEVEL9K_CUSTOM_PYENV_ICON_BACKGROUND=0
+          if (( $(bc <<<"$(tput cols) > $qmax") )); then
+            echo "$pyv \U1F40D"
+          elif (( $(bc <<<"$(tput cols) < $maxdivxterm") )); then
+            echo "\U1F40D"
+          else
+            echo "$pyv \U1F40D"
+          fi
+
+        else
+          if (( $(bc <<<"$(tput cols) < $maxdivxterm") )); then
+            echo "\uE63C"
+          elif (( $(bc <<<"$(tput cols) < $maxdivxterm") )); then
+            echo "\uE63C"
+          else
+            echo "$pyv \uE63C"
+          fi
+        fi
       fi
     fi
   fi
@@ -244,7 +309,19 @@ custom_git_stats() {
     # + \Uf067
     # - \Uf068
 
-    echo "\Uf15c $total_changed \Uf055 $total_insertions \Uf056 $total_deletions"
+    if [[ $(whoami) == 'root' ]]; then
+      if [[ $($(ps -p $(ps -p $$ -o ppid=) o args=) --version) == *util-linux* ]]; then
+        echo "$total_changed $total_insertions $total_deletions"
+      else
+        echo "\Uf15c $total_changed \Uf055 $total_insertions \Uf056 $total_deletions"
+      fi
+    else
+      if [[ $(ps -p $(ps -p $$ -o ppid=) o args=) == *xterm* ]]; then
+        echo "$total_changed $total_insertions $total_deletions"
+      else
+        echo "\Uf15c $total_changed \Uf055 $total_insertions \Uf056 $total_deletions"
+      fi
+    fi
   fi
 }
 
@@ -272,11 +349,22 @@ custom_state() {
   if [[ $(whoami) == 'root' ]]; then
     POWERLEVEL9K_DIR_FOREGROUND=7
     POWERLEVEL9K_DIR_BACKGROUND=1
+    POWERLEVEL9K_USER_ROOT_FOREGROUND=7
+    POWERLEVEL9K_USER_ROOT_BACKGROUND=1
     POWERLEVEL9K_CUSTOM_USER_ICON_FOREGROUND=7
     POWERLEVEL9K_CUSTOM_USER_ICON_BACKGROUND=1
     POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND=0
   else
     if [[ -n $(echo $XTERM_VERSION) ]]; then
+      POWERLEVEL9K_DIR_FOREGROUND=0
+      POWERLEVEL9K_DIR_HOME_FOREGROUND=0
+      POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND=0
+      POWERLEVEL9K_DIR_DEFAULT_FOREGROUND=0
+      POWERLEVEL9K_TIME_DEFAULT_FOREGROUND=0
+      POWERLEVEL9K_TIME_ICON_DEFAULT_FOREGROUND=0
+      POWERLEVEL9K_TIME_FOREGROUND=0
+      POWERLEVEL9K_TIME_ICON_FOREGROUND=0
+    elif [[ $(ps -p $(ps -p $$ -o ppid=) o args=) == *util-linux* ]]; then
       POWERLEVEL9K_DIR_FOREGROUND=0
       POWERLEVEL9K_DIR_HOME_FOREGROUND=0
       POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND=0
@@ -547,3 +635,46 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 export PYTHONSTARTUP=/projects/PYTHONSTARTUP.py
+unset-conda(){
+  unset CONDA_DEFAULT_ENV
+  unset CONDA_EXE
+  unset CONDA_PREFIX
+  unset CONDA_PROMPT_MODIFIER
+  unset CONDA_PYTHON_EXE
+  unset CONDA_SHLVL
+}
+
+#eval "$(pyenv virtualenv-init -)"
+
+which_term(){
+      term=$(ps -p $(ps -p $$ -o ppid=) -o args=);
+      found=0;
+      case $term in
+          *gnome-terminal*)
+              found=1
+              echo "gnome-terminal " $(dpkg -l gnome-terminal | awk '/^ii/{print $3}')
+              ;;
+          *lxterminal*)
+              found=1
+              echo "lxterminal " $(dpkg -l lxterminal | awk '/^ii/{print $3}')
+              ;;
+          rxvt*)
+              found=1
+              echo "rxvt " $(dpkg -l rxvt | awk '/^ii/{print $3}')
+              ;;
+          ## Try and guess for any others
+          *)
+              for v in '-version' '--version' '-V' '-v'
+              do
+                  $term "$v" &>/dev/null && eval $term $v && found=1 && break
+              done
+              ;;
+      esac
+      ## If none of the version arguments worked, try and get the
+      ## package version
+      [ $found -eq 0 ] && echo "$term " $(dpkg -l $term | awk '/^ii/{print $3}')
+}
+
+export PYENV_ROOT="/projects/pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
