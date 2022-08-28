@@ -32,7 +32,7 @@ alias lt='ls -larth'
 alias move='mv -v -i'
 alias copy='cp -v -i'
 
-LS_COLORS='rs=0:di=0;96:ln=03;101;4:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=30;102:st=37;44:ex=01;32:*.run=0;100:*.json=01;37:*.tar=01;93:*.tgz=0;93:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=1;31;47:*.z=01;31:*.dz=01;31:*.gz=01;93:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;93:*.zst=01;31:*.tzst=01;31:*.bz2=01;93:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;101:*.rpm=01;31:*.jar=0;30;42:*.war=0;30;42:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=0;30;42:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;34:*.jpeg=01;34:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;34:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;34:*.tiff=01;34:*.png=01;34:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*.h=01;35';
+export LS_COLORS='rs=0:di=0;96:ln=03;101;4:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=30;102:st=37;44:ex=01;32:*.run=0;100:*.json=01;37:*.tar=01;93:*.tgz=0;93:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=1;31;47:*.z=01;31:*.dz=01;31:*.gz=01;93:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;93:*.zst=01;31:*.tzst=01;31:*.bz2=01;93:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;101:*.rpm=01;31:*.jar=0;30;42:*.war=0;30;42:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=0;30;42:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;34:*.jpeg=01;34:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;34:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;34:*.tiff=01;34:*.png=01;34:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*.h=01;35';
 
 export OPENSSL_CONF=/etc/ssl/
 
@@ -71,7 +71,7 @@ maxdivxterm=81
 maxqterm=128
 qmax=226
 if (( $(bc <<<"$(tput cols) > $qmax") )); then
-  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats nvm node_version rvm dir_writable date time load custom_containt_files custom_state)
+  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats nvm node_version rvm dir_writable date time load custom_containt_files custom_debug_state custom_state)
   ########
   # MOTD #
   ########
@@ -79,7 +79,7 @@ if (( $(bc <<<"$(tput cols) > $qmax") )); then
     fortune | cowsay -f dragon-and-cow
   fi
 elif (( $(bc <<<"$(tput cols) > $max") )); then
-  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats nvm node_version rvm dir_writable date time load custom_containt_files custom_state)
+  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats nvm node_version rvm dir_writable date time load custom_containt_files custom_debug_state custom_state)
   ########
   # MOTD #
   ########
@@ -87,13 +87,13 @@ elif (( $(bc <<<"$(tput cols) > $max") )); then
     fortune | cowsay -f dragon-and-cow
   fi
 elif (( $(bc <<<"$(tput cols) < $maxdivxterm") )); then
-  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats dir_writable time custom_state)
+  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats dir_writable time custom_debug_state custom_state)
 elif (( $(bc <<<"$(tput cols) < $max") )); then
-  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats dir_writable time custom_containt_files custom_state)
+  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats dir_writable time custom_containt_files custom_debug_state custom_state)
 elif (( $(bc <<<"$(tput cols) < $maxqterm") )); then
-  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats dir_writable time custom_containt_files custom_state)
+  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats dir_writable time custom_containt_files custom_debug_state custom_state)
 else
-  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats nvm dir_writable date time load custom_containt_files custom_state)
+  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats nvm dir_writable date time load custom_containt_files custom_debug_state custom_state)
 fi
 
 POWERLEVEL9K_USER_ICON="\uF306" # 
@@ -111,6 +111,8 @@ else
 	POWERLEVEL9K_CUSTOM_USER_ICON_FOREGROUND=0
 	POWERLEVEL9K_CUSTOM_USER_ICON_BACKGROUND=7
 fi
+
+POWERLEVEL9K_VIRTUALENV_BACKGROUND="yellow"
 
 # Custom Ruby
 # Just shows a cute ruby icon (in red)
@@ -152,6 +154,36 @@ custom_user_icon() {
     fi
   fi
 }
+
+custom_debug_state() {
+  local DEBUG_STATE=$(echo $DEBUG)
+  local DEBUG_SERVER_STATE=$(echo $DEBUG_SERVER)
+  local DEBUGGER_SERVER_STATE=$(echo $DEBUGGER_SERVER)
+
+  local D_STATE
+
+  if [[ $DEBUG_STATE ]]; then
+    D_STATE="$D_STATE D:\u2714 "
+  fi
+
+  if [[ $DEBUG_SERVER_STATE ]]; then
+    D_STATE="$D_STATE S:\u2714 "
+  fi
+
+  if [[ $DEBUGGER_SERVER_STATE ]]; then
+    D_STATE="$D_STATE DS:\u2714 "
+  fi
+
+  echo $D_STATE
+
+}
+
+POWERLEVEL9K_CUSTOM_DEBUG_STATE="custom_debug_state"
+POWERLEVEL9K_CUSTOM_DEBUG_STATE_FOREGROUND=7
+POWERLEVEL9K_CUSTOM_DEBUG_STATE_BACKGROUND=22
+
+POWERLEVEL9K_RVM_FOREGROUND=7
+POWERLEVEL9K_RVM_BACKGROUND=52
 
 POWERLEVEL9K_CUSTOM_USER_ICON="custom_user_icon"
 
@@ -257,7 +289,7 @@ custom_containt_files() {
   fi
 
   if [[ $html != "0.00" ]]; then
-    files="$files $html%%html"
+    files="$files $html%%ht"
   fi
 
   if [[ $css != "0.00" ]]; then
@@ -460,8 +492,8 @@ EDITOR='nano'
 #########
 # Paths #
 #########
-export NVM_DIR="~/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+#export NVM_DIR="~/.nvm"
+#[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
 ##################
 # Custom Plugins #
@@ -612,8 +644,8 @@ function setcartoview() {
 	export DEFAULT_BACKEND_UPLOADER=geonode.importer
 }
 
-#synclient tapbutton1=1
-#. "$HOME/.cargo/env"
+synclient tapbutton1=1
+. "$HOME/.cargo/env"
 
 export PATH=$PATH:~/.local/bin
 export PATH="$PATH:/opt/mssql-tools/bin"
@@ -678,3 +710,4 @@ which_term(){
 export PYENV_ROOT="/projects/pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
