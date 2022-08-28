@@ -71,7 +71,7 @@ maxdivxterm=81
 maxqterm=128
 qmax=226
 if (( $(bc <<<"$(tput cols) > $qmax") )); then
-  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats nvm node_version rvm dir_writable date time load custom_containt_files custom_debug_state custom_state)
+  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats load nvm node_version rvm dir_writable date time custom_containt_files custom_debug_state custom_state)
   ########
   # MOTD #
   ########
@@ -79,7 +79,7 @@ if (( $(bc <<<"$(tput cols) > $qmax") )); then
     fortune | cowsay -f dragon-and-cow
   fi
 elif (( $(bc <<<"$(tput cols) > $max") )); then
-  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats nvm node_version rvm dir_writable date time load custom_containt_files custom_debug_state custom_state)
+  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats load nvm node_version rvm dir_writable date time custom_containt_files custom_debug_state custom_state)
   ########
   # MOTD #
   ########
@@ -87,13 +87,13 @@ elif (( $(bc <<<"$(tput cols) > $max") )); then
     fortune | cowsay -f dragon-and-cow
   fi
 elif (( $(bc <<<"$(tput cols) < $maxdivxterm") )); then
-  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats dir_writable time custom_debug_state custom_state)
+  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats load dir_writable time custom_debug_state custom_state)
 elif (( $(bc <<<"$(tput cols) < $max") )); then
-  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats dir_writable time custom_containt_files custom_debug_state custom_state)
+  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats load dir_writable time custom_containt_files custom_debug_state custom_state)
 elif (( $(bc <<<"$(tput cols) < $maxqterm") )); then
-  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats dir_writable time custom_containt_files custom_debug_state custom_state)
+  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats load dir_writable time custom_containt_files custom_debug_state custom_state)
 else
-  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats nvm dir_writable date time load custom_containt_files custom_debug_state custom_state)
+  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status virtualenv command_execution_time custom_git_stats load nvm dir_writable date time custom_containt_files custom_debug_state custom_state)
 fi
 
 POWERLEVEL9K_USER_ICON="\uF306" # 
@@ -180,10 +180,10 @@ custom_debug_state() {
 
 POWERLEVEL9K_CUSTOM_DEBUG_STATE="custom_debug_state"
 POWERLEVEL9K_CUSTOM_DEBUG_STATE_FOREGROUND=7
-POWERLEVEL9K_CUSTOM_DEBUG_STATE_BACKGROUND=22
+POWERLEVEL9K_CUSTOM_DEBUG_STATE_BACKGROUND=52
 
 POWERLEVEL9K_RVM_FOREGROUND=7
-POWERLEVEL9K_RVM_BACKGROUND=52
+POWERLEVEL9K_RVM_BACKGROUND=161
 
 POWERLEVEL9K_CUSTOM_USER_ICON="custom_user_icon"
 
@@ -366,11 +366,11 @@ POWERLEVEL9K_DIR_HOME_BACKGROUND=108
 POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND=0
 POWERLEVEL9K_DIR_HOME_SUBFOLDER_BACKGROUND=115
 POWERLEVEL9K_DIR_DEFAULT_FOREGROUND=0
-POWERLEVEL9K_DIR_DEFAULT_BACKGROUND=130
+POWERLEVEL9K_DIR_DEFAULT_BACKGROUND=043
 POWERLEVEL9K_SHOW_CHANGESET=true
 POWERLEVEL9K_STATUS_VERBOSE=false
 POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD=0
-POWERLEVEL9K_COMMAND_EXECUTION_TIME_FOREGROUND="white"
+POWERLEVEL9K_COMMAND_EXECUTION_TIME_FOREGROUND=0
 POWERLEVEL9K_COMMAND_EXECUTION_TIME_BACKGROUND="blue"
 
 # POWERLEVEL9K_DIR_BACKGROUND=130
